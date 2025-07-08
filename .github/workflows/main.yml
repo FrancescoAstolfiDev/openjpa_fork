@@ -21,6 +21,16 @@ jobs:
           distribution: temurin
           cache: maven
 
+      # Infine compiliamo xmlstore con enhancement disabilitato
+      - name: Build xmlstore
+        run: >
+          mvn install 
+          -pl openjpa-xmlstore 
+          -am 
+          -DskipTests 
+          -Dcheckstyle.skip=true 
+          -Dopenjpa.enhance.skip=true
+
       # Prima compiliamo solo i moduli core necessari senza enhancement
       - name: Build moduli base
         run: >
@@ -38,12 +48,3 @@ jobs:
           -Dtest=PersistenceProviderImplJUnit5Tests 
           -Dopenjpa.enhance.skip=true
 
-      # Infine compiliamo xmlstore con enhancement disabilitato
-      - name: Build xmlstore
-        run: >
-          mvn install 
-          -pl openjpa-xmlstore 
-          -am 
-          -DskipTests 
-          -Dcheckstyle.skip=true 
-          -Dopenjpa.enhance.skip=true
