@@ -63,10 +63,10 @@ import org.apache.openjpa.persistence.meta.Members.Member;
 abstract class Joins {
 
     static Join clone(Join join) {
-        java.util.List<Member> members = new ArrayList<>();
+        java.util.List<Members.Member> members = new ArrayList<>();
         java.util.List<JoinType> jts = new ArrayList<>();
         FromImpl<?, ?> root = getMembers((PathImpl)join, members, jts);
-        Member<?, ?> member = members.get(0);
+        Members.Member<?, ?> member = members.get(0);
         JoinType jt = jts.get(0);
         Join join1 = makeJoin(root, member, jt);
         for (int i = 1; i < members.size(); i++)
@@ -75,28 +75,28 @@ abstract class Joins {
         return join1;
     }
 
-    static Join<?, ?> makeJoin(FromImpl<?, ?> from, Member member,
+    static Join<?, ?> makeJoin(FromImpl<?, ?> from, Members.Member member,
             JoinType jt) {
         if (member instanceof Members.SingularAttributeImpl)
-            return new SingularJoin(from,
+            return new Joins.SingularJoin(from,
                     (Members.SingularAttributeImpl) member, jt);
         else if (member instanceof Members.CollectionAttributeImpl)
-            return new Collection(from,
+            return new Joins.Collection(from,
                     (Members.CollectionAttributeImpl) member, jt);
         else if (member instanceof Members.ListAttributeImpl)
-            return new List(from, (Members.ListAttributeImpl) member, jt);
+            return new Joins.List(from, (Members.ListAttributeImpl) member, jt);
         else if (member instanceof Members.SetAttributeImpl)
-            return new Set(from, (Members.SetAttributeImpl) member, jt);
-        else if (member instanceof MapAttributeImpl)
-            return new Map(from, (MapAttributeImpl) member, jt);
+            return new Joins.Set(from, (Members.SetAttributeImpl) member, jt);
+        else if (member instanceof Members.MapAttributeImpl)
+            return new Joins.Map(from, (Members.MapAttributeImpl) member, jt);
         return null;
     }
 
     static FromImpl getMembers(PathImpl join,
-            java.util.List<Member> members,
+            java.util.List<Members.Member> members,
             java.util.List<JoinType> jts) {
         PathImpl parent = (PathImpl) join.getParentPath();
-        Member member = join.getMember();
+        Members.Member member = join.getMember();
         JoinType jt = ((Join) join).getJoinType();
         FromImpl<?, ?> from = null;
         if (parent instanceof RootImpl) {
@@ -626,7 +626,7 @@ abstract class Joins {
         implements MapJoin<Z,K,V> {
         private KeyJoin<K,V> _keyJoin;
 
-        public Map(FromImpl<?,Z> parent, MapAttributeImpl<? super Z, K,V> member, JoinType jt) {
+        public Map(FromImpl<?,Z> parent, Members.MapAttributeImpl<? super Z, K,V> member, JoinType jt) {
             super(parent, member, jt);
         }
 
@@ -662,7 +662,7 @@ abstract class Joins {
             AbstractManagedType<java.util.Map<K,V>> pseudoOwner = (AbstractManagedType<java.util.Map<K,V>>)
                _member.owner.model.getType(getModel().getJavaType());
             KeyAttributeImpl<java.util.Map<K,V>, K> keyAttr =
-              new KeyAttributeImpl<>(pseudoOwner, _member.fmd);
+              new Members.KeyAttributeImpl<>(pseudoOwner, _member.fmd);
             _keyJoin = new KeyJoin<>((FromImpl<?,java.util.Map<K,V>>)this, keyAttr, jt);
             return _keyJoin;
         }
@@ -764,7 +764,7 @@ abstract class Joins {
     * @param <K> the type of the key of the original java.util.Map attribute
     * @param <V> the type of the value of the original java.util.Map attribute
     */
-   static class KeyJoin<K,V> extends Set<java.util.Map<K, V>, K> {
+   static class KeyJoin<K,V> extends Joins.Set<java.util.Map<K, V>, K> {
     public KeyJoin(FromImpl<?, java.util.Map<K, V>> parent, KeyAttributeImpl<? super java.util.Map<K, V>, K> member,
             JoinType jt) {
         super(parent, member, jt);

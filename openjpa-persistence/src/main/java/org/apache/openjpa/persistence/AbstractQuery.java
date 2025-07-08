@@ -75,7 +75,7 @@ public abstract class AbstractQuery<X> implements OpenJPAQuerySPI<X> {
         Map<Object, Object> result = new HashMap<>();
         if (_boundParams == null)
             return result;
-        for (Entry<Object, Parameter<?>> entry : getDeclaredParameters().entrySet()) {
+        for (Map.Entry<Object, Parameter<?>> entry : getDeclaredParameters().entrySet()) {
             Object paramKey = entry.getKey();
             Parameter<?> param = entry.getValue();
             result.put(paramKey, _boundParams.get(param));
@@ -288,7 +288,7 @@ public abstract class AbstractQuery<X> implements OpenJPAQuerySPI<X> {
         try {
             clearBinding();
             if (params != null) {
-                for (Entry e : (Set<Entry>) params.entrySet()) {
+                for (Map.Entry e : (Set<Map.Entry>) params.entrySet()) {
                     setParameter((String) e.getKey(), e.getValue());
                 }
             }
@@ -471,7 +471,7 @@ public abstract class AbstractQuery<X> implements OpenJPAQuerySPI<X> {
             return Collections.EMPTY_SET;
         getDeclaredParameters();
         Set<Object> result = new HashSet<>();
-        for (Entry<Object, Parameter<?>> entry : _declaredParams.entrySet()) {
+        for (Map.Entry<Object, Parameter<?>> entry : _declaredParams.entrySet()) {
             if (isBound(entry.getValue())) {
                 result.add(entry.getKey());
             }

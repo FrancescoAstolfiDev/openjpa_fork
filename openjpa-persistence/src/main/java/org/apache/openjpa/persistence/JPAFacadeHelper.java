@@ -156,7 +156,7 @@ public class JPAFacadeHelper {
     }
 
     /**
-     * Returns the {@link ClassMetaData} associated with
+     * Returns the {@link org.apache.openjpa.meta.ClassMetaData} associated with
      * the persistent object <code>o</code>.
      */
     public static ClassMetaData getMetaData(Object o) {
@@ -168,7 +168,7 @@ public class JPAFacadeHelper {
     }
 
     /**
-     * Returns the {@link ClassMetaData} associated
+     * Returns the {@link org.apache.openjpa.meta.ClassMetaData} associated
      * with the persistent type <code>cls</code>.
      */
     public static ClassMetaData getMetaData(EntityManager em, Class cls) {
@@ -186,7 +186,7 @@ public class JPAFacadeHelper {
     }
 
     /**
-     * Returns the {@link ClassMetaData} associated
+     * Returns the {@link org.apache.openjpa.meta.ClassMetaData} associated
      * with the persistent type <code>cls</code>.
      */
     public static ClassMetaData getMetaData(EntityManagerFactory emf,

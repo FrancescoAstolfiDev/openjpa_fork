@@ -29,7 +29,7 @@ import org.apache.openjpa.persistence.OpenJPAPersistenceUtil;
  * OpenJPA optimized TraversableResolver Default implementation/behavior asks all discovered providers -
  * jakarta.persistence.Persistence.getPersistenceUtil().isLoaded( traversableObject, traversableProperty.getName());
  *
- * @see TraversableResolver
+ * @see jakarta.validation.TraversableResolver
  */
 public class TraversableResolverImpl implements TraversableResolver {
 

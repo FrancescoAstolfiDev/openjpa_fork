@@ -51,7 +51,7 @@ import org.apache.openjpa.persistence.meta.Members.Member;
  */
 class PathImpl<Z,X> extends ExpressionImpl<X> implements Path<X> {
     protected final PathImpl<?,Z> _parent;
-    protected final Member<? super Z,?> _member;
+    protected final Members.Member<? super Z,?> _member;
     private boolean isEmbedded = false;
     private PathImpl<?,?> _correlatedPath;
 
@@ -71,7 +71,7 @@ class PathImpl<Z,X> extends ExpressionImpl<X> implements Path<X> {
      * @param member the persistent property that represents this path.
      * @param cls denotes the type expressed by this path.
      */
-    public PathImpl(PathImpl<?,Z> parent, Member<? super Z, ?> member, Class<X> cls) {
+    public PathImpl(PathImpl<?,Z> parent, Members.Member<? super Z, ?> member, Class<X> cls) {
         super(cls);
         _parent = parent;
         if (_parent.isEmbedded) {
@@ -119,7 +119,7 @@ class PathImpl<Z,X> extends ExpressionImpl<X> implements Path<X> {
      * @return the embedded field or the given field itself
      */
     protected FieldMetaData getEmbeddedFieldMetaData(FieldMetaData fmd) {
-        Member<?,?> member = getInnermostMember(_parent,_member);
+        Members.Member<?,?> member = getInnermostMember(_parent,_member);
 
         ClassMetaData embeddedMeta = member.fmd.isElementCollection()
         		? member.fmd.getElement().getEmbeddedMetaData()
@@ -128,7 +128,7 @@ class PathImpl<Z,X> extends ExpressionImpl<X> implements Path<X> {
         return (embeddedMeta != null) ? embeddedMeta.getField(fmd.getName()) : fmd;
     }
 
-    protected Member<?,?> getInnermostMember(PathImpl<?,?> parent, Member<?,?> member) {
+    protected Members.Member<?,?> getInnermostMember(PathImpl<?,?> parent, Members.Member<?,?> member) {
         return member != null ? member : getInnermostMember(parent._parent,  parent._member);
     }
 
@@ -286,7 +286,7 @@ class PathImpl<Z,X> extends ExpressionImpl<X> implements Path<X> {
             throw new IllegalArgumentException(this + " is a basic path and can not be navigated to " + attName);
         }
 
-        Member<? super X, Y> next = (Member<? super X, Y>)
+        Members.Member<? super X, Y> next = (Members.Member<? super X, Y>)
            ((ManagedType<? super X>)type).getAttribute(attName);
         return new PathImpl<>(this, next, next.getJavaType());
     }

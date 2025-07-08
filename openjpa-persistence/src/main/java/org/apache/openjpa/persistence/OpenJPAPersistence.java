@@ -251,7 +251,7 @@ public class OpenJPAPersistence {
      */
     @Deprecated
     public static OpenJPAEntityManager toEntityManager(
-        Broker broker) {
+        org.apache.openjpa.kernel.Broker broker) {
         return JPAFacadeHelper.toEntityManager(broker);
     }
 

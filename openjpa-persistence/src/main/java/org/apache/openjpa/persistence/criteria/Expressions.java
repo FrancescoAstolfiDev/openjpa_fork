@@ -572,7 +572,7 @@ class Expressions {
         @Override
         public Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
             return factory.newFunction(functionName, getJavaType(),
-                new ListArgument(resultType, args).toValue(factory, q));
+                new Expressions.ListArgument(resultType, args).toValue(factory, q));
         }
 
         @Override
@@ -982,9 +982,9 @@ class Expressions {
         }
     }
 
-    public static class CurrentLocalDateTime extends ExpressionImpl<LocalDateTime> {
+    public static class CurrentLocalDateTime extends ExpressionImpl<java.time.LocalDateTime> {
         public CurrentLocalDateTime() {
-            super(LocalDateTime.class);
+            super(java.time.LocalDateTime.class);
         }
 
         @Override
@@ -998,9 +998,9 @@ class Expressions {
         }
     }
 
-    public static class CurrentLocalDate extends ExpressionImpl<LocalDate> {
+    public static class CurrentLocalDate extends ExpressionImpl<java.time.LocalDate> {
         public CurrentLocalDate() {
-            super(LocalDate.class);
+            super(java.time.LocalDate.class);
         }
 
         @Override
@@ -1014,9 +1014,9 @@ class Expressions {
         }
     }
 
-    public static class CurrentLocalTime extends ExpressionImpl<LocalTime> {
+    public static class CurrentLocalTime extends ExpressionImpl<java.time.LocalTime> {
         public CurrentLocalTime() {
-            super(LocalTime.class);
+            super(java.time.LocalTime.class);
         }
 
         @Override
@@ -1372,7 +1372,7 @@ class Expressions {
         }
 
         @Override
-        public Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
+        public org.apache.openjpa.kernel.exps.Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
             Value v = Expressions.toValue(e, factory, q);
             ClassMetaData meta = ((PathImpl<?,?>)e)._member.fmd.getElement().getTypeMetaData();
             v.setMetaData(meta);
@@ -1500,7 +1500,7 @@ class Expressions {
         }
 
         @Override
-        public Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
+        public org.apache.openjpa.kernel.exps.Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
             Value[] vs = new Value[values.size()];
             int i = 0;
             for (Expression<?> e : values)
@@ -1535,7 +1535,7 @@ class Expressions {
         }
 
         @Override
-        public Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
+        public org.apache.openjpa.kernel.exps.Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
             Value value1 = Expressions.toValue((ExpressionImpl<?>)val1, factory, q);
             Value value2 = Expressions.toValue((ExpressionImpl<?>)val2, factory, q);
             return factory.nullIfExpression(value1, value2);
@@ -1631,13 +1631,13 @@ class Expressions {
 
         @Override
         public In<T> value(T value) {
-            add(new Equal(e,value));
+            add(new Expressions.Equal(e,value));
             return this;
         }
 
         @Override
         public In<T> value(Expression<? extends T> value) {
-            add(new Equal(e,value));
+            add(new Expressions.Equal(e,value));
             return this;
         }
 
@@ -1656,7 +1656,7 @@ class Expressions {
             ExpressionFactory factory, CriteriaQueryImpl<?> q) {
             org.apache.openjpa.kernel.exps.Expression inExpr = null;
             if (_exps.size() == 1) {
-                Equal e = (Equal)_exps.get(0);
+                Expressions.Equal e = (Expressions.Equal)_exps.get(0);
                 ExpressionImpl<?> e2 = e.e2;
                 ExpressionImpl<?> e1 = e.e1;
 
@@ -1676,15 +1676,15 @@ class Expressions {
 
                     _exps.clear();
                     if (value == null) {
-                        add(new Equal(e1, null));
+                        add(new Expressions.Equal(e1, null));
                     } else if (value.getClass().isArray()) {
                         final int len = Array.getLength(value);
                         for (int i = 0; i < len; i++) {
-                            add(new Equal(e1, Array.get(value, i)));
+                            add(new Expressions.Equal(e1, Array.get(value, i)));
                         }
                     } else if (Collection.class.isInstance(value)) {
                         for (final Object item : Collection.class.cast(value)) {
-                            add(new Equal(e1, item));
+                            add(new Expressions.Equal(e1, item));
                         }
                     }
                 } else {
@@ -1699,13 +1699,13 @@ class Expressions {
                         Collection coll = (Collection)((Literal)val2).getValue();
                         _exps.clear();
                         for (Object v : coll) {
-                            add(new Equal(e1,v));
+                            add(new Expressions.Equal(e1,v));
                         }
                     }
                 }
             }
             inExpr = super.toKernelExpression(factory, q);
-            IsNotNull notNull = new IsNotNull(e);
+            IsNotNull notNull = new Expressions.IsNotNull(e);
 
             return factory.and(inExpr, notNull.toKernelExpression(factory, q));
         }
@@ -1744,7 +1744,7 @@ class Expressions {
 
         @Override
         public Case<T> when(Expression<Boolean> when, T then) {
-            return when(when, new Constant<>(then));
+            return when(when, new Expressions.Constant<>(then));
         }
 
         @Override
@@ -1755,11 +1755,11 @@ class Expressions {
 
         @Override
         public Case<T> otherwise(T otherwise) {
-            return otherwise(new Constant<>(otherwise));
+            return otherwise(new Expressions.Constant<>(otherwise));
         }
 
         @Override
-        public Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
+        public org.apache.openjpa.kernel.exps.Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
             int size = whens.size();
             org.apache.openjpa.kernel.exps.Expression[] exps = new org.apache.openjpa.kernel.exps.Expression[size];
             for (int i = 0; i < size; i++) {
@@ -1836,7 +1836,7 @@ class Expressions {
 
         @Override
         public SimpleCase<C,R> when(C when, R then) {
-            return when(when, new Constant<>(then));
+            return when(when, new Expressions.Constant<>(then));
         }
 
         @Override
@@ -1847,11 +1847,11 @@ class Expressions {
 
         @Override
         public SimpleCase<C,R> otherwise(R otherwise) {
-            return otherwise(new Constant<>(otherwise));
+            return otherwise(new Expressions.Constant<>(otherwise));
         }
 
         @Override
-        public Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
+        public org.apache.openjpa.kernel.exps.Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
             Value caseOperandExpr = Expressions.toValue((ExpressionImpl<?>)caseOperand, factory, q);
             int size = whens.size();
             org.apache.openjpa.kernel.exps.Expression[] exps = new org.apache.openjpa.kernel.exps.Expression[size];
@@ -2048,8 +2048,8 @@ class Expressions {
         }
 
         @Override
-        public Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
-            Value e = actual.toValue(factory, q);
+        public org.apache.openjpa.kernel.exps.Value toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
+            org.apache.openjpa.kernel.exps.Value e = actual.toValue(factory, q);
             e.setImplicitType(getJavaType());
             return e;
         }
@@ -2079,7 +2079,7 @@ class Expressions {
 
         @Override
         public org.apache.openjpa.kernel.exps.Arguments toValue(ExpressionFactory factory, CriteriaQueryImpl<?> q) {
-            Value[] kvs = new Value[_args.length];
+            org.apache.openjpa.kernel.exps.Value[] kvs = new org.apache.openjpa.kernel.exps.Value[_args.length];
             int i = 0;
             for (ExpressionImpl<?> arg : _args) {
                 kvs[i++] = arg.toValue(factory, q);
