@@ -21,15 +21,6 @@ jobs:
           distribution: temurin
           cache: maven
 
-      - name: Build modulo xmlstore con test
-        run: >
-          mvn clean install 
-          -pl openjpa-xmlstore 
-          -am 
-          -Drat.skip=true 
-          -Dcheckstyle.skip=true 
-          -Dopenjpa.DynamicEnhancementAgent=false
-
       - name: Build progetto completo (senza test, escludendo xmlstore)
         run: >
           mvn clean install 
@@ -39,6 +30,17 @@ jobs:
           -Dcheckstyle.skip=true 
           -Dopenjpa.DynamicEnhancementAgent=false 
           -pl '!openjpa-xmlstore'
+
+      - name: Build modulo xmlstore con test
+        run: >
+          mvn clean install 
+          -pl openjpa-xmlstore 
+          -am 
+          -Drat.skip=true 
+          -Dcheckstyle.skip=true 
+          -Dopenjpa.DynamicEnhancementAgent=false
+
+      
 
       - name: Esegui test su openjpa-persistence
         run: >
