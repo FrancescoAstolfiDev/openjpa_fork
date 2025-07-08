@@ -23,7 +23,7 @@ jobs:
 
 
       - name: Build con Maven (skip test globale)
-        run: mvn clean install -DskipTests -DskipITs -Drat.skip=true -D checkstyle.skip=true -Dopenjpa.DynamicEnhancementAgent=false
+        run: mvn clean install -DskipTests -DskipITs -Drat.skip=true -D checkstyle.skip=true -Dopenjpa.DynamicEnhancementAgent=false -pl !openjpa-xmlstore
 
       - name: Build modulo xmlstore con test
         run: |
