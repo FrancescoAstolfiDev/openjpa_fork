@@ -60,8 +60,11 @@ public class PersistenceProviderFunctionalTests {
     @Test
     public void testEntityManagerFactoryCreation() {
         // Set minimal properties for in-memory database
-        properties.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
-        properties.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+        properties.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(ForeignKeys=true)");
+        properties.put("openjpa.ConnectionDriverName", "org.apache.derby.jdbc.EmbeddedDriver");
+        properties.put("openjpa.ConnectionURL", "jdbc:derby:target/database/testdb;create=true");
+        properties.put("openjpa.BrokerFactory", "org.apache.openjpa.jdbc.kernel.JDBCBrokerFactory");
+
 
         // Create EntityManagerFactory
         OpenJPAEntityManagerFactory emf = provider.createEntityManagerFactory("test-unit", properties);

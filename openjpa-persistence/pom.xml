@@ -116,6 +116,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/evosuite-1.2.0.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.apache.openjpa</groupId>
+            <artifactId>openjpa-jdbc</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -135,7 +142,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
+                <version>0.8.11</version>
                 <configuration>
                     <!-- Specifica quali classi analizzare -->
                     <includes>
