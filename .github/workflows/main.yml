@@ -25,7 +25,6 @@ jobs:
         run: >
           mvn clean install 
           -pl '!openjpa-xmlstore' 
-          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
           -Dcheckstyle.skip=true 
           -Dmaven.test.skip=true
 
@@ -34,7 +33,6 @@ jobs:
           mvn clean install 
           -pl openjpa-xmlstore 
           -am 
-          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
           -Dcheckstyle.skip=true 
           -Dmaven.test.skip=true
 
@@ -42,5 +40,4 @@ jobs:
         run: >
           mvn test 
           -pl openjpa-persistence 
-          -Dtest=PersistenceProviderImplJUnit5Tests 
-          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar"
+          -Dtest=PersistenceProviderImplJUnit5Tests
