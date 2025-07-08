@@ -22,13 +22,12 @@ jobs:
           cache: maven
 
 
+      - name: Build moduli base
+        run: mvn clean install -pl :openjpa-lib,:openjpa-kernel,:openjpa-jdbc,:openjpa-persistence -DskipTests
+
       - name: Build con Maven (skip test globale)
         run: mvn clean install -DskipTests -DskipITs -Drat.skip=true -D checkstyle.skip=true -Dopenjpa.DynamicEnhancementAgent=false -pl !openjpa-xmlstore
 
-      - name: Build modulo xmlstore con test
-        run: |
-          mvn clean install -pl :openjpa-kernel,:openjpa-lib,:openjpa-jdbc -DskipTests
-          mvn test -pl :openjpa-xmlstore -Dopenjpa.DynamicEnhancementAgent=false
 
       - name: Build modulo persistence con test
         run: mvn test -pl openjpa-persistence -D checkstyle.skip=true -Drat.skip=true
