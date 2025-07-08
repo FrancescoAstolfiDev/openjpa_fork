@@ -29,12 +29,10 @@
         <artifactId>openjpa-parent</artifactId>
         <version>4.1.2-SNAPSHOT</version>
     </parent>
-
     <artifactId>openjpa-persistence</artifactId>
     <packaging>jar</packaging>
     <name>OpenJPA Persistence</name>
     <description>OpenJPA Persistence</description>
-
     <dependencies>
         <dependency>
             <groupId>org.apache.openjpa</groupId>
@@ -42,9 +40,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa-jdbc</artifactId>
-            <version>${project.version}</version>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>
@@ -55,7 +52,7 @@
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
-        <!-- for osgi bundle activator code, use same level as Apache Aries -->
+        <!--  for osgi bundle activator code, use same level as Apache Aries  -->
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.core</artifactId>
