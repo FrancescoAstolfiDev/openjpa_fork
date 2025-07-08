@@ -1,0 +1,29 @@
+
+name: Java CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.14.1
+        with:
+          java-version: 11
+          distribution: temurin
+          cache: maven
+
+      - name: Build con Maven (skip test globale)
+        run: mvn clean install -DskipTests -Dcheckstyle.skip=true -Drat.skip=true -pl
+
+      - name: Build modulo persistence con test
+        run: mvn test -pl openjpa-persistence -Dcheckstyle.skip=true
+
