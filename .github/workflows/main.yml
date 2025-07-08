@@ -1,16 +1,27 @@
+name: Main CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Java
-        uses: actions/setup-java@v3
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.14.1
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: 11
+          distribution: temurin
+          cache: maven
 
-      - name: Build modulo openjpa-xmlstore (con test)
+      # 1. Build openjpa-xmlstore con test
+      - name: Build modulo xmlstore con test
         run: >
           mvn clean install 
           -pl openjpa-xmlstore 
@@ -19,7 +30,8 @@ jobs:
           -Dcheckstyle.skip=true 
           -Dopenjpa.DynamicEnhancementAgent=false
 
-      - name: Build tutto il progetto tranne openjpa-xmlstore (senza test)
+      # 2. Build tutto il resto (senza test e senza xmlstore)
+      - name: Build progetto completo (senza test, escludendo xmlstore)
         run: >
           mvn clean install 
           -DskipTests 
@@ -29,9 +41,10 @@ jobs:
           -Dopenjpa.DynamicEnhancementAgent=false 
           -pl '!openjpa-xmlstore'
 
-      - name: Build modulo openjpa-persistence (con test)
+      # 3. Test del modulo openjpa-persistence
+      - name: Esegui test su openjpa-persistence
         run: >
-          mvn clean install 
+          mvn test 
           -pl openjpa-persistence 
           -am 
           -Drat.skip=true 
