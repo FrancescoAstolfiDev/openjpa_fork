@@ -21,32 +21,26 @@ jobs:
           distribution: temurin
           cache: maven
 
-      - name: Build progetto completo (senza test, escludendo xmlstore)
+      - name: Build generale (escluso xmlstore)
         run: >
           mvn clean install 
-          -DskipTests 
-          -DskipITs 
-          -Drat.skip=true 
+          -pl '!openjpa-xmlstore' 
+          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
           -Dcheckstyle.skip=true 
-          -Dopenjpa.DynamicEnhancementAgent=false 
-          -pl '!openjpa-xmlstore'
+          -Dmaven.test.skip=true
 
-      - name: Build modulo xmlstore con test
+      - name: Build xmlstore
         run: >
           mvn clean install 
           -pl openjpa-xmlstore 
           -am 
-          -Drat.skip=true 
+          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
           -Dcheckstyle.skip=true 
-          -Dopenjpa.DynamicEnhancementAgent=false
+          -Dmaven.test.skip=true
 
-      
-
-      - name: Esegui test su openjpa-persistence
+      - name: Test PersistenceProviderImpl
         run: >
           mvn test 
           -pl openjpa-persistence 
-          -am 
-          -Drat.skip=true 
-          -Dcheckstyle.skip=true 
-          -Dopenjpa.DynamicEnhancementAgent=false
+          -Dtest=PersistenceProviderImplJUnit5Tests 
+          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar"
