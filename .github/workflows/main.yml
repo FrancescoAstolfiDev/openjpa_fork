@@ -21,6 +21,27 @@ jobs:
           distribution: temurin
           cache: maven
 
+      # Prima compiliamo i moduli core necessari
+      - name: Build moduli base
+        run: >
+          mvn clean install 
+          -pl '!openjpa-xmlstore,!openjpa-slice,!openjpa-examples,!openjpa-integration' 
+          -DskipTests 
+          -Dcheckstyle.skip=true 
+          -Dmaven.test.skip=true 
+          -Dskip.enhancer=true 
+          -Denforcer.skip=true 
+          -P!test-enhance
+
+      # Eseguiamo i test specifici
+      - name: Test PersistenceProviderImpl
+        run: >
+          mvn test 
+          -pl openjpa-persistence 
+          -Dtest=PersistenceProviderImplJUnit5Tests 
+          -Dskip.enhancer=true 
+          -P!test-enhance
+
       # Infine compiliamo xmlstore disabilitando esplicitamente l'enhancement
       - name: Build xmlstore
         run: >
@@ -35,25 +56,4 @@ jobs:
           -Dopenjpa.test.enhance.skip=true 
           -DskipTests=true 
           -Denforcer.skip=true
-
-
-      # Prima compiliamo i moduli core necessari
-      - name: Build moduli base
-        run: >
-          mvn clean install 
-          -pl '!openjpa-xmlstore,!openjpa-slice,!openjpa-examples,!openjpa-integration' 
-          -DskipTests 
-          -Dcheckstyle.skip=true 
-          -Dmaven.test.skip=true 
-          -Dskip.enhancer=true 
-          -Denforcer.skip=true 
-          -P!test-enhance
-
-      # Poi compiliamo i test di PersistenceProviderImpl
-      - name: Test PersistenceProviderImpl
-        run: >
-          mvn test 
-          -pl openjpa-persistence 
-          -Dtest=PersistenceProviderImplJUnit5Tests 
-          -Dopenjpa.enhance.skip=true
 
