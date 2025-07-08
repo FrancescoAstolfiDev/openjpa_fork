@@ -35,8 +35,8 @@ public interface OpenJPAEntityTransaction
      * </pre> except that the entity manager's internal atomic lock is utilized,
      * so this method can be safely executed from multiple threads.
      *
-     * @see jakarta.persistence.EntityTransaction#commit()
-     * @see jakarta.persistence.EntityTransaction#begin()
+     * @see EntityTransaction#commit()
+     * @see EntityTransaction#begin()
      */
     void commitAndResume();
 
@@ -46,8 +46,8 @@ public interface OpenJPAEntityTransaction
      * </pre> except that the entity manager's internal atomic lock is utilized,
      * so this method can be safely executed from multiple threads.
      *
-     * @see jakarta.persistence.EntityTransaction#rollback()
-     * @see jakarta.persistence.EntityTransaction#begin()
+     * @see EntityTransaction#rollback()
+     * @see EntityTransaction#begin()
      */
     void rollbackAndResume();
 

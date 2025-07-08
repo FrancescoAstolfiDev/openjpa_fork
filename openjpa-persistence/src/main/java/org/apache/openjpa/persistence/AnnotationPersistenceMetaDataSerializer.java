@@ -434,7 +434,7 @@ public class AnnotationPersistenceMetaDataSerializer
         if (_seqs == null)
             return;
 
-        for (Map.Entry entry : _seqs.entrySet()) {
+        for (Entry entry : _seqs.entrySet()) {
             if (entry.getKey() == null)
                 all.addAll((List) entry.getValue());
             else if (_metas == null || !_metas.containsKey(entry.getKey()))
@@ -450,7 +450,7 @@ public class AnnotationPersistenceMetaDataSerializer
         if (_queries == null)
             return;
 
-        for (Map.Entry entry : _queries.entrySet()) {
+        for (Entry entry : _queries.entrySet()) {
             if (entry.getKey() == null)
                 all.addAll((List) entry.getValue());
             else if (_mode == MetaDataModes.MODE_QUERY || _metas == null
@@ -1258,7 +1258,7 @@ public class AnnotationPersistenceMetaDataSerializer
 
     /**
      * Represents ordered set of
-     * {@link org.apache.openjpa.meta.SequenceMetaData}s with a common class
+     * {@link SequenceMetaData}s with a common class
      * scope.
      *
      * @author Stephen Kim
@@ -1334,7 +1334,7 @@ public class AnnotationPersistenceMetaDataSerializer
     }
 
     /**
-     * Represents ordered set of {@link org.apache.openjpa.meta.QueryMetaData}s
+     * Represents ordered set of {@link QueryMetaData}s
      * with a common class scope.
      *
      * @author Stephen Kim

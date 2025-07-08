@@ -2927,7 +2927,7 @@ public class XMLPersistenceMetaDataParser
         if (_fgList == null) {
             _fgList = new ArrayList<>();
         }
-        _currentFg = new AnnotationPersistenceMetaDataParser.FetchGroupImpl(attrs.getValue("name"),
+        _currentFg = new FetchGroupImpl(attrs.getValue("name"),
             Boolean.parseBoolean(attrs.getValue("post-load")));
 
         return true;

@@ -166,31 +166,31 @@ public class PersistenceExceptions
                         && ke.getNestedThrowables().length == 1)
                          ? ke.getNestedThrowables()[0] : null;
         if (subtype == StoreException.OBJECT_NOT_FOUND || cause instanceof ObjectNotFoundException) {
-                e = new org.apache.openjpa.persistence.EntityNotFoundException(msg, nested, failed, fatal);
+                e = new EntityNotFoundException(msg, nested, failed, fatal);
         } else if (subtype == StoreException.OPTIMISTIC	|| cause instanceof OptimisticException) {
-            	e = new org.apache.openjpa.persistence.OptimisticLockException(msg, nested, failed, fatal);
+            	e = new OptimisticLockException(msg, nested, failed, fatal);
         } else if (subtype == StoreException.LOCK || cause instanceof LockException) {
             LockException lockEx = (LockException) (ke instanceof LockException ? ke : cause);
             if (lockEx != null && lockEx.getLockLevel() >= MixedLockLevels.LOCK_PESSIMISTIC_READ) {
                 if (!lockEx.isFatal()) {
-                    e = new org.apache.openjpa.persistence.LockTimeoutException(msg, nested, failed);
+                    e = new LockTimeoutException(msg, nested, failed);
                 } else {
-                    e = new org.apache.openjpa.persistence.PessimisticLockException(msg, nested, failed);
+                    e = new PessimisticLockException(msg, nested, failed);
                 }
             } else {
-                e = new org.apache.openjpa.persistence.OptimisticLockException(msg, nested, failed, fatal);
+                e = new OptimisticLockException(msg, nested, failed, fatal);
             }
         } else if (subtype == StoreException.OBJECT_EXISTS || cause instanceof ObjectExistsException) {
-                e = new org.apache.openjpa.persistence.EntityExistsException(msg, nested, failed, fatal);
+                e = new EntityExistsException(msg, nested, failed, fatal);
         } else if (subtype == StoreException.QUERY || cause instanceof QueryException) {
             QueryException queryEx = (QueryException) (ke instanceof QueryException ? ke : cause);
             if (!queryEx.isFatal()) {
-                e = new org.apache.openjpa.persistence.QueryTimeoutException(msg, nested, failed, false);
+                e = new QueryTimeoutException(msg, nested, failed, false);
             } else {
-                e = new org.apache.openjpa.persistence.PersistenceException(msg, nested, failed, true);
+                e = new PersistenceException(msg, nested, failed, true);
             }
         } else {
-            e = new org.apache.openjpa.persistence.PersistenceException(msg, nested, failed, fatal);
+            e = new PersistenceException(msg, nested, failed, fatal);
         }
         e.setStackTrace(ke.getStackTrace());
         return e;
@@ -210,22 +210,22 @@ public class PersistenceExceptions
         switch (ke.getSubtype()) {
             case UserException.NO_TRANSACTION:
                 e = new
-                    org.apache.openjpa.persistence.TransactionRequiredException
+                    TransactionRequiredException
                         (ke.getMessage(), getNestedThrowables(ke),
                             getFailedObject(ke), ke.isFatal());
                 break;
             case UserException.NO_RESULT:
-                e = new org.apache.openjpa.persistence.NoResultException
+                e = new NoResultException
                     (ke.getMessage(), getNestedThrowables(ke),
                         getFailedObject(ke), ke.isFatal());
                 break;
             case UserException.NON_UNIQUE_RESULT:
-                e = new org.apache.openjpa.persistence.NonUniqueResultException
+                e = new NonUniqueResultException
                     (ke.getMessage(), getNestedThrowables(ke),
                         getFailedObject(ke), ke.isFatal());
                 break;
             case UserException.INVALID_STATE:
-                e = new org.apache.openjpa.persistence.InvalidStateException
+                e = new InvalidStateException
                     (ke.getMessage(), getNestedThrowables(ke),
                         getFailedObject(ke), ke.isFatal());
                 break;
@@ -279,7 +279,7 @@ public class PersistenceExceptions
         		    ke.getMessage(), getNestedThrowables(ke),
                 	getFailedObject(ke), ke.isFatal());
     	} else {
-    		return new org.apache.openjpa.persistence.ArgumentException(
+    		return new ArgumentException(
         		ke.getMessage(), getNestedThrowables(ke),
         		getFailedObject(ke), ke.isFatal());
     	}
@@ -289,7 +289,7 @@ public class PersistenceExceptions
      * Translate the given general exception.
      */
     private static Throwable translateGeneralException(OpenJPAException ke) {
-        Exception e = new org.apache.openjpa.persistence.PersistenceException
+        Exception e = new PersistenceException
             (ke.getMessage(), getNestedThrowables(ke),
                 getFailedObject(ke), ke.isFatal());
         e.setStackTrace(ke.getStackTrace());

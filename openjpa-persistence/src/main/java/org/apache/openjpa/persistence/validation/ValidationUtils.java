@@ -50,17 +50,44 @@ public class ValidationUtils {
      * @throws If a Validator was required but could not be created.
      */
     public static boolean setupValidation(OpenJPAConfiguration conf) {
+        if (conf == null) {
+            return false;
+        }
+
         Log log = conf.getConfigurationLog();
+        if (log == null) {
+            // If we can't get a log, just return false
+            return false;
+        }
+
         boolean brc = false;
 
         // only try creating a Validator for JPA2 and if not mode==NONE
+        if (conf.getSpecificationInstance() == null) {
+            if (log.isTraceEnabled()) {
+                log.trace("Not creating a ValidatorImpl because " +
+                    "specification instance is null");
+            }
+            return false;
+        }
+
         if (conf.getSpecificationInstance().getVersion() < 2) {
             if (log.isTraceEnabled()) {
                 log.trace("Not creating a ValidatorImpl because " +
                     "this app is using the JPA 1.0 Spec");
             }
+            return false;
         }
-        else if (!(String.valueOf(ValidationMode.NONE)
+
+        if (conf.getValidationMode() == null) {
+            if (log.isTraceEnabled()) {
+                log.trace("Not creating a ValidatorImpl because " +
+                    "validation mode is null");
+            }
+            return false;
+        }
+
+        if (!(String.valueOf(ValidationMode.NONE)
                 .equalsIgnoreCase(conf.getValidationMode()))) {
             // we'll use this in the exception handlers
             boolean bValRequired = String.valueOf(ValidationMode.CALLBACK)

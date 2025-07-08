@@ -1047,7 +1047,7 @@ public interface OpenJPAEntityManager
 
     /**
      * @deprecated use {@link #setAutoDetach(AutoDetachType)} or
-     * {@link #setAutoDetach(java.util.EnumSet)} instead.
+     * {@link #setAutoDetach(EnumSet)} instead.
      */
     @Deprecated void setAutoDetach(int autoDetachFlags);
 

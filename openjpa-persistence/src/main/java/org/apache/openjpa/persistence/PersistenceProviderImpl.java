@@ -272,7 +272,7 @@ public class PersistenceProviderImpl
                 provider = ((Class) provider).getName();
             }
             try {
-                if (!((String) provider).equals(org.apache.openjpa.persistence.PersistenceProviderImpl.class.getName())) {
+                if (!((String) provider).equals(PersistenceProviderImpl.class.getName())) {
                     return false;
                 }
 

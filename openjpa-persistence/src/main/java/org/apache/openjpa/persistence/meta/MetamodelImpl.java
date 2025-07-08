@@ -220,7 +220,7 @@ public class MetamodelImpl implements Metamodel, Resolver {
                 return (Type<X>)_basics.get(cls);
             if (_pseudos.containsKey(cls))
                 return (Type<X>)_pseudos.get(cls);
-            if (java.util.Map.class.isAssignableFrom(cls)) {
+            if (Map.class.isAssignableFrom(cls)) {
                 Types.PseudoEntity<X> pseudo = new Types.PseudoEntity(cls, this);
                 _pseudos.put(cls, new Types.PseudoEntity(cls, this));
                 return pseudo;

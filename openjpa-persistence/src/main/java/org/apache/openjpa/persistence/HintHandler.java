@@ -48,7 +48,7 @@ import org.apache.openjpa.lib.util.StringDistance;
  *
  * The hint keys from following sources are collected and handled:
  *
- * 1. {@link org.apache.openjpa.kernel.QueryHints} interface declares hint keys
+ * 1. {@link QueryHints} interface declares hint keys
  *    as public static final fields. These fields are collected by reflection.
  *    The values are handled by invoking methods on the owning {@link QueryImpl}
  *

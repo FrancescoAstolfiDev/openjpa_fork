@@ -252,7 +252,7 @@ public class Types {
         }
 
         @Override
-        public jakarta.persistence.metamodel.Type.PersistenceType getPersistenceType() {
+        public PersistenceType getPersistenceType() {
             return PersistenceType.ENTITY;
         }
     }

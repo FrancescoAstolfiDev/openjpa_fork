@@ -285,7 +285,7 @@ public class Members {
      * Represents attributes declared as java.util.Collection&lt;E&gt;.
      */
     public static class CollectionAttributeImpl<X, E>
-        extends PluralAttributeImpl<X, java.util.Collection<E>, E>
+        extends PluralAttributeImpl<X, Collection<E>, E>
         implements CollectionAttribute<X, E> {
 
         public CollectionAttributeImpl(AbstractManagedType<X> owner, FieldMetaData fmd) {

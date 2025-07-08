@@ -820,7 +820,7 @@ public abstract class AbstractManagedType<X> extends Types.BaseType<X>
      * for generic varargs array construction.
      */
 
-    public static <T, C extends java.util.Collection<E>, E> C filter(Collection<T> original,
+    public static <T, C extends Collection<E>, E> C filter(Collection<T> original,
         C result, Filter<T> f1, Filter<T> f2, Filter<T> f3, Filter<T> f4) {
         for (T t : original) {
             if ((f1 == null || f1.selects(t)) && (f2 == null || f2.selects(t))
@@ -846,17 +846,17 @@ public abstract class AbstractManagedType<X> extends Types.BaseType<X>
         return null;
     }
 
-    static <T, C extends java.util.Collection<E>, E> C filter(Collection<T> original,
+    static <T, C extends Collection<E>, E> C filter(Collection<T> original,
             C result, Filter<T> f1) {
         return filter(original, result, f1, null, null, null);
     }
 
-    static <T, C extends java.util.Collection<E>, E> C filter(Collection<T> original,
+    static <T, C extends Collection<E>, E> C filter(Collection<T> original,
             C result, Filter<T> f1, Filter<T> f2) {
         return filter(original, result, f1, f2, null, null);
     }
 
-    static <T, C extends java.util.Collection<E>, E> C filter(Collection<T> original,
+    static <T, C extends Collection<E>, E> C filter(Collection<T> original,
             C result, Filter<T> f1, Filter<T> f2, Filter<T> f3) {
         return filter(original, result, f1, f2, f3, null);
     }

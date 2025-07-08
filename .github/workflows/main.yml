@@ -1,5 +1,5 @@
 
-name: Java CI
+name: Main CI
 
 on:
   push:
@@ -25,5 +25,5 @@ jobs:
         run: mvn clean install -DskipTests 
 
       - name: Build modulo persistence con test
-        run: mvn test -pl openjpa-persistence -Dcheckstyle.skip=true
+        run: mvn test -pl openjpa-persistence
 

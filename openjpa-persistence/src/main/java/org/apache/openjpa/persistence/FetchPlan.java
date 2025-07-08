@@ -323,7 +323,7 @@ public interface FetchPlan {
      * method pierces the published-API boundary, as does the SPI cast.
      */
     @Deprecated
-    @Reflectable(false) org.apache.openjpa.kernel.FetchConfiguration getDelegate();
+    @Reflectable(false) FetchConfiguration getDelegate();
 
     /**
      * Affirms if extended path lookup feature is active.
