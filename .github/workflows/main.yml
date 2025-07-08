@@ -21,21 +21,24 @@ jobs:
           distribution: temurin
           cache: maven
 
-      - name: Build generale (escluso xmlstore)
+      # Prima compiliamo tutti i moduli necessari tranne xmlstore
+      - name: Build moduli base
         run: >
           mvn clean install 
-          -pl '!openjpa-xmlstore' 
-          -Dcheckstyle.skip=true 
-          -Dmaven.test.skip=true
+          -pl '!openjpa-xmlstore,!openjpa-slice,!openjpa-examples,!openjpa-integration' 
+          -DskipTests 
+          -Dcheckstyle.skip=true
 
+      # Poi compiliamo xmlstore separatamente
       - name: Build xmlstore
         run: >
-          mvn clean install 
+          mvn install 
           -pl openjpa-xmlstore 
           -am 
-          -Dcheckstyle.skip=true 
-          -Dmaven.test.skip=true
+          -DskipTests 
+          -Dcheckstyle.skip=true
 
+      # Infine eseguiamo solo i test che ci interessano
       - name: Test PersistenceProviderImpl
         run: >
           mvn test 
