@@ -22,8 +22,8 @@ jobs:
           cache: maven
 
 
-      - name: Build con Maven (skip test globale)
-        run: mvn clean install -DskipTests -DskipITs -Drat.skip=true -D checkstyle.skip=true
+#      - name: Build con Maven (skip test globale)
+#        run: mvn clean install -DskipTests -DskipITs -Drat.skip=true -D checkstyle.skip=true
 
       - name: Build modulo persistence con test
         run: mvn test -pl openjpa-persistence -D checkstyle.skip=true -Drat.skip=true

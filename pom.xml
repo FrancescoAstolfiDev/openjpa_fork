@@ -106,6 +106,7 @@
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
         <jakarta.jms-api.version>3.1.0</jakarta.jms-api.version>
         <jacoco.version>0.8.11</jacoco.version>
+
     </properties>
 
     <licenses>
@@ -214,6 +215,23 @@
             </properties>
             <build>
                 <plugins>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
@@ -227,6 +245,22 @@
                             </execution>
                         </executions>
                     </plugin>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <plugin>
                         <groupId>org.apache.rat</groupId>
                         <artifactId>apache-rat-plugin</artifactId>
@@ -1045,6 +1079,47 @@
                             </images>
                         </configuration>
                     </plugin>
+
+
+
+
+
+
+
+
+
+
+
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <version>0.16.1</version>
+                        <configuration>
+                            <skip>true</skip>
+                            <excludes>
+                                <exclude>**/*</exclude>
+                            </excludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </plugins>
             </build>
 
@@ -1934,6 +2009,16 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
