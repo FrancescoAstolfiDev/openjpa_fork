@@ -28,3 +28,4 @@ jobs:
       - name: Build modulo persistence con test
         run: mvn test -pl openjpa-persistence -Dcheckstyle.skip=true -Drat.skip=true
 
+
