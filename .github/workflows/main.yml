@@ -27,10 +27,10 @@ jobs:
           mvn clean install 
           -pl openjpa-xmlstore 
           -am 
+          -DargLine="-javaagent:~/.m2/repository/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
           -Dcheckstyle.skip=true 
           -Dmaven.test.skip=true
-          -DskipTests 
-          -DskipITs
+      
       
       
       
