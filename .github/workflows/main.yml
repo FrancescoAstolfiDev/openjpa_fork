@@ -23,46 +23,9 @@ jobs:
           key: 'cache'
           restore-keys: 'cache'
       - name: 'Build with Maven'
-        run: mvn -B install --file pom.xml
+        run: mvn -B install   -Dcheckstyle.skip=true --file pom.xml
       - name: 'Remove Snapshots Before Caching'
         run: find ~/.m2 -name '*SNAPSHOT' | xargs rm -Rf
-
-
-
-
-
-
-      # Infine compiliamo xmlstore disabilitando esplicitamente l'enhancement
-      - name: Build modulo xmlstore con test
-        run: >
-          mvn clean install 
-          -pl openjpa-xmlstore 
-          -am 
-          -DargLine="-javaagent:~/.m2/repository/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
-          -Dcheckstyle.skip=true 
-          -Dmaven.test.skip=true
-      
-      
-      
-      
-
-      # Prima compiliamo i moduli core necessari
-      - name: Build moduli base
-        run: >
-          mvn clean install 
-            -pl '!openjpa-xmlstore' 
-            -Dcheckstyle.skip=true 
-            -Dmaven.test.skip=true
-      
-
-      # Eseguiamo i test specifici
-      - name: Test PersistenceProviderImpl
-        run: >
-          mvn test 
-          -pl openjpa-persistence 
-          -Dtest=PersistenceProviderImplJUnit5Tests 
-          -Dskip.enhancer=true 
-          -P!test-enhance
 
      
 
