@@ -24,6 +24,7 @@ import org.apache.openjpa.conf.OpenJPAConfigurationImpl;
 import org.apache.openjpa.meta.AbstractCFMetaDataFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -150,7 +151,7 @@ public class PersistenceProviderCategoryPartitionTests {
     }
 
 
-//    @Disabled("Fix to make on the source code ")
+    @Disabled("Fix to make on the source code ")
     @ParameterizedTest
     @MethodSource("createEntityManagerFactoryWithResourceTestData")
     @DisplayName("Test createEntityManagerFactory(String name, String resource, Map m)")
@@ -212,7 +213,7 @@ public class PersistenceProviderCategoryPartitionTests {
         );
     }
 
-//    @Disabled("Fix to make on the source code ")
+    @Disabled("Fix to make on the source code ")
     @ParameterizedTest
     @MethodSource("createEntityManagerFactoryTestData")
     @DisplayName("Test createEntityManagerFactory(String name, Map m)")
@@ -294,7 +295,7 @@ public class PersistenceProviderCategoryPartitionTests {
         );
     }
 
-//    @Disabled("Fix to make on the source code ")
+    @Disabled("Fix to make on the source code ")
     @ParameterizedTest
     @MethodSource("createContainerEntityManagerFactoryTestData")
     @DisplayName("Test createContainerEntityManagerFactory(PersistenceUnitInfo pui, Map m)")

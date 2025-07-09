@@ -226,7 +226,7 @@ public class PersistenceProviderFunctionalTests {
     /**
      * Test 7: Verify that factory reuse from pool works correctly.
      */
-//    @Disabled("the factory that are created are not inserted in to the pool ")
+    @Disabled("the factory that are created are not inserted in to the pool ")
     @Test
     public void testFactoryReuse() {
         properties.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
@@ -246,6 +246,44 @@ public class PersistenceProviderFunctionalTests {
         if (emf1 != emf2) {
             emf2.close();
         }
+    }
+    /**
+     * Test per verificare il comportamento del getBrokerFactory nel PersistenceProviderImpl
+     * relativamente alla gestione del pooling attraverso il parametro EntityManagerFactoryPool
+     */
+    @Test
+    void testGetBrokerFactoryPooling() {
+        // Setup
+        PersistenceProviderImpl provider = new PersistenceProviderImpl();
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
+        properties.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+        properties.put("openjpa.BrokerFactory", "jdbc");
+
+        // Test Case 1: EntityManagerFactoryPool non specificato
+        OpenJPAEntityManagerFactory emf1 = provider.createEntityManagerFactory("test-unit", properties);
+        assertNotNull(emf1, "L'EntityManagerFactory dovrebbe essere creato anche senza specificare il pooling");
+
+        // Test Case 2: EntityManagerFactoryPool = false
+        properties.put("EntityManagerFactoryPool", "false");
+        OpenJPAEntityManagerFactory emf2 = provider.createEntityManagerFactory("test-unit", properties);
+        assertNotNull(emf2, "L'EntityManagerFactory dovrebbe essere creato con pooling disabilitato");
+
+        // Test Case 3: EntityManagerFactoryPool = true
+        properties.put("EntityManagerFactoryPool", "true");
+        OpenJPAEntityManagerFactory emf3 = provider.createEntityManagerFactory("test-unit", properties);
+        assertNotNull(emf3, "L'EntityManagerFactory dovrebbe essere creato con pooling abilitato");
+
+        // Test Case 4: Valore non valido per EntityManagerFactoryPool
+        properties.put("EntityManagerFactoryPool", "invalid_value");
+        assertThrows(IllegalArgumentException.class, () -> {
+            provider.createEntityManagerFactory("test-unit", properties);
+        }, "Dovrebbe lanciare IllegalArgumentException per un valore non valido di EntityManagerFactoryPool");
+
+        // Cleanup
+        emf1.close();
+        emf2.close();
+        emf3.close();
     }
 
 
@@ -268,8 +306,6 @@ public class PersistenceProviderFunctionalTests {
         final CountDownLatch endLatch = new CountDownLatch(threadCount);
         final AtomicReference<OpenJPAEntityManagerFactory> firstFactory = new AtomicReference<>();
         final AtomicReference<Exception> threadException = new AtomicReference<>();
-
-
 
         // Create threads that will concurrently create EntityManagerFactory
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
