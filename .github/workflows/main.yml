@@ -21,6 +21,17 @@ jobs:
           distribution: temurin
           cache: maven
 
+      # Infine compiliamo xmlstore disabilitando esplicitamente l'enhancement
+      - name: Build modulo xmlstore con test
+        run: >
+          mvn clean install 
+          -pl openjpa-xmlstore 
+          -am 
+          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
+          -Dcheckstyle.skip=true 
+          -Dmaven.test.skip=true
+      
+
       # Prima compiliamo i moduli core necessari
       - name: Build moduli base
         run: >
@@ -42,18 +53,6 @@ jobs:
           -Dskip.enhancer=true 
           -P!test-enhance
 
-      # Infine compiliamo xmlstore disabilitando esplicitamente l'enhancement
-      - name: Build xmlstore
-        run: >
-          mvn install 
-          -pl openjpa-xmlstore 
-          -DskipTests 
-          -Dcheckstyle.skip=true 
-          -Dmaven.test.skip=true 
-          -Dskip.enhancer=true 
-          -P!test-enhance 
-          -Dopenjpa.enhance.skip=true 
-          -Dopenjpa.test.enhance.skip=true 
-          -DskipTests=true 
-          -Denforcer.skip=true
+     
+
 
