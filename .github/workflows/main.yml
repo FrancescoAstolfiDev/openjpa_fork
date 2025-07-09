@@ -27,22 +27,19 @@ jobs:
           mvn clean install 
           -pl openjpa-xmlstore 
           -am 
-          -DargLine="-javaagent:${settings.localRepository}/org/apache/openjpa/openjpa/4.1.2-SNAPSHOT/openjpa-4.1.2-SNAPSHOT.jar" 
           -Dcheckstyle.skip=true 
           -Dmaven.test.skip=true
+      
       
 
       # Prima compiliamo i moduli core necessari
       - name: Build moduli base
         run: >
           mvn clean install 
-          -pl '!openjpa-xmlstore,!openjpa-slice,!openjpa-examples,!openjpa-integration' 
-          -DskipTests 
-          -Dcheckstyle.skip=true 
-          -Dmaven.test.skip=true 
-          -Dskip.enhancer=true 
-          -Denforcer.skip=true 
-          -P!test-enhance
+            -pl '!openjpa-xmlstore' 
+            -Dcheckstyle.skip=true 
+            -Dmaven.test.skip=true
+      
 
       # Eseguiamo i test specifici
       - name: Test PersistenceProviderImpl
