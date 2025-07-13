@@ -151,31 +151,84 @@ public class PersistenceProviderCategoryPartitionTests {
     }
 
 
-    @Disabled("Fix to make on the source code ")
+    // Test cases for createEntityManagerFactory(String name, String resource, Map m)
+
     @ParameterizedTest
-    @MethodSource("createEntityManagerFactoryWithResourceTestData")
-    @DisplayName("Test createEntityManagerFactory(String name, String resource, Map m)")
-    public void testCreateEntityManagerFactoryWithResource(String name, String resource, Map<String, Object> map, boolean shouldSucceed) {
+    @MethodSource("createValidEntityManagerFactoryWithResourceTestData")
+    @DisplayName("Test createEntityManagerFactory with valid inputs")
+    public void testCreateEntityManagerFactoryWithResourceValid(String name, String resource, Map<String, Object> map) {
         try {
             OpenJPAEntityManagerFactory emf = provider.createEntityManagerFactory(name, resource, map);
-            if (shouldSucceed) {
-                assertNotNull(emf, "EntityManagerFactory should not be null for valid inputs");
-                emf.close();
-            } else {
-                // Test disabilitato: l'EntityManagerFactory dovrebbe essere null per input non validi
-                if (emf != null) {
-                    emf.close();
-                }
-
-                // TODO: fix to support that check
-                assertNull(emf, "EntityManagerFactory should be null for invalid inputs");
-            }
+            assertNotNull(emf, "EntityManagerFactory should not be null for valid inputs");
+            emf.close();
         } catch (Exception e) {
-            if (shouldSucceed) {
-                fail("Should not throw exception for valid inputs: " + e.getMessage());
+            fail("Should not throw exception for valid inputs: " + e.getMessage());
+        }
+    }
+
+    @Disabled("Fix to make on the source code")
+    @ParameterizedTest
+    @MethodSource("createInvalidEntityManagerFactoryWithResourceTestData")
+    @DisplayName("Test createEntityManagerFactory with invalid inputs")
+    public void testCreateEntityManagerFactoryWithResourceInvalid(String name, String resource, Map<String, Object> map) {
+        try {
+            OpenJPAEntityManagerFactory emf = provider.createEntityManagerFactory(name, resource, map);
+            // Test disabilitato: l'EntityManagerFactory dovrebbe essere null per input non validi
+            if (emf != null) {
+                emf.close();
             }
+
+            // TODO: fix to support that check
+            assertNull(emf, "EntityManagerFactory should be null for invalid inputs");
+        } catch (Exception e) {
             // Exception is expected for invalid inputs
         }
+    }
+
+    /**
+     * Valid test data for createEntityManagerFactory(String name, String resource, Map m)
+     */
+    static Stream<Arguments> createValidEntityManagerFactoryWithResourceTestData() {
+        Map<String, Object> validMap = new HashMap<>();
+        validMap.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
+        validMap.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+
+        Map<String, Object> emptyMap = Collections.emptyMap();
+
+        return Stream.of(
+                arguments((Object) "test-unit", (Object) "META-INF/persistence.xml", (Object) validMap),
+                arguments((Object) "test-unit", (Object) "META-INF/persistence.xml", (Object) emptyMap),
+                arguments((Object) "test-unit", (Object) "META-INF/persistence.xml", (Object) null),
+                arguments((Object) "test-unit", (Object) null, (Object) validMap)
+        );
+    }
+
+    /**
+     * Invalid test data for createEntityManagerFactory(String name, String resource, Map m)
+     */
+    static Stream<Arguments> createInvalidEntityManagerFactoryWithResourceTestData() {
+        Map<String, Object> validMap = new HashMap<>();
+        validMap.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
+        validMap.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+
+        Map<String, Object> emptyMap = Collections.emptyMap();
+
+        return Stream.of(
+                arguments((Object) "test-unit", (Object) null, (Object) emptyMap),
+                arguments((Object) "test-unit", (Object) null, (Object) null),
+                arguments((Object) "non-existent-unit", (Object) "META-INF/persistence.xml", (Object) validMap),
+                arguments((Object) "non-existent-unit", (Object) "META-INF/persistence.xml", (Object) emptyMap),
+                arguments((Object) "non-existent-unit", (Object) "META-INF/persistence.xml", (Object) null),
+                arguments((Object) "non-existent-unit", (Object) null, (Object) validMap),
+                arguments((Object) "non-existent-unit", (Object) null, (Object) emptyMap),
+                arguments((Object) "non-existent-unit", (Object) null, (Object) null),
+                arguments((Object) null, (Object) "META-INF/persistence.xml", (Object) validMap),
+                arguments((Object) null, (Object) "META-INF/persistence.xml", (Object) emptyMap),
+                arguments((Object) null, (Object) "META-INF/persistence.xml", (Object) null),
+                arguments((Object) null, (Object) null, (Object) validMap),
+                arguments((Object) null, (Object) null, (Object) emptyMap),
+                arguments((Object) null, (Object) null, (Object) null)
+        );
     }
 
     /**
@@ -213,31 +266,82 @@ public class PersistenceProviderCategoryPartitionTests {
         );
     }
 
-    @Disabled("Fix to make on the source code ")
+    // Test cases for createEntityManagerFactory(String name, Map m)
+
     @ParameterizedTest
-    @MethodSource("createEntityManagerFactoryTestData")
-    @DisplayName("Test createEntityManagerFactory(String name, Map m)")
-    public void testCreateEntityManagerFactory(String name, Map<String, Object> map, boolean shouldSucceed) {
+    @MethodSource("createValidEntityManagerFactoryTestData")
+    @DisplayName("Test createEntityManagerFactory with valid inputs")
+    public void testCreateEntityManagerFactoryValid(String name, Map<String, Object> map) {
         try {
             OpenJPAEntityManagerFactory emf = provider.createEntityManagerFactory(name, map);
-            if (shouldSucceed) {
-                assertNotNull(emf, "EntityManagerFactory should not be null for valid inputs");
-                emf.close();
-            } else {
-                // Test disabilitato: l'EntityManagerFactory dovrebbe essere null per input non validi
-                if (emf != null) {
-                    emf.close();
-                }
-
-                // TODO: fix to support that check
-                assertNull(emf, "EntityManagerFactory should be null for invalid inputs");
-            }
+            assertNotNull(emf, "EntityManagerFactory should not be null for valid inputs");
+            emf.close();
         } catch (Exception e) {
-            if (shouldSucceed) {
-                fail("Should not throw exception for valid inputs: " + e.getMessage());
+            fail("Should not throw exception for valid inputs: " + e.getMessage());
+        }
+    }
+
+    @Disabled("Fix to make on the source code")
+    @ParameterizedTest
+    @MethodSource("createInvalidEntityManagerFactoryTestData")
+    @DisplayName("Test createEntityManagerFactory with invalid inputs")
+    public void testCreateEntityManagerFactoryInvalid(String name, Map<String, Object> map) {
+        try {
+            OpenJPAEntityManagerFactory emf = provider.createEntityManagerFactory(name, map);
+            // Test disabilitato: l'EntityManagerFactory dovrebbe essere null per input non validi
+            if (emf != null) {
+                emf.close();
             }
+
+            // TODO: fix to support that check
+            assertNull(emf, "EntityManagerFactory should be null for invalid inputs");
+        } catch (Exception e) {
             // Exception is expected for invalid inputs
         }
+    }
+
+    /**
+     * Valid test data for createEntityManagerFactory(String name, Map m)
+     */
+    static Stream<Arguments> createValidEntityManagerFactoryTestData() {
+        Map<String, Object> validMap = new HashMap<>();
+        validMap.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
+        validMap.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+
+        return Stream.of(
+                // Valid name, valid map
+                arguments((Object) "test-unit", (Object) validMap)
+        );
+    }
+
+    /**
+     * Invalid test data for createEntityManagerFactory(String name, Map m)
+     */
+    static Stream<Arguments> createInvalidEntityManagerFactoryTestData() {
+        Map<String, Object> validMap = new HashMap<>();
+        validMap.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
+        validMap.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+
+        Map<String, Object> emptyMap = Collections.emptyMap();
+
+        return Stream.of(
+                // Valid name, empty map
+                arguments((Object) "test-unit", (Object) emptyMap),
+                // Valid name, null map
+                arguments((Object) "test-unit", (Object) null),
+                // Non-existent name, valid map
+                arguments((Object) "non-existent-unit", (Object) validMap),
+                // Non-existent name, empty map
+                arguments((Object) "non-existent-unit", (Object) emptyMap),
+                // Non-existent name, null map
+                arguments((Object) "non-existent-unit", (Object) null),
+                // Null name, valid map
+                arguments((Object) null, (Object) validMap),
+                // Null name, empty map
+                arguments((Object) null, (Object) emptyMap),
+                // Null name, null map
+                arguments((Object) null, (Object) null)
+        );
     }
 
     /**
@@ -295,31 +399,106 @@ public class PersistenceProviderCategoryPartitionTests {
         );
     }
 
-    @Disabled("Fix to make on the source code ")
+    // Test cases for createContainerEntityManagerFactory(PersistenceUnitInfo pui, Map m)
+
     @ParameterizedTest
-    @MethodSource("createContainerEntityManagerFactoryTestData")
-    @DisplayName("Test createContainerEntityManagerFactory(PersistenceUnitInfo pui, Map m)")
-    public void testCreateContainerEntityManagerFactory(PersistenceUnitInfo pui, Map<String, Object> map, boolean shouldSucceed) {
+    @MethodSource("createValidContainerEntityManagerFactoryTestData")
+    @DisplayName("Test createContainerEntityManagerFactory with valid inputs")
+    public void testCreateContainerEntityManagerFactoryValid(PersistenceUnitInfo pui, Map<String, Object> map) {
         try {
             OpenJPAEntityManagerFactory emf = provider.createContainerEntityManagerFactory(pui, map);
-            if (shouldSucceed) {
-                assertNotNull(emf, "EntityManagerFactory should not be null for valid inputs");
-                emf.close();
-            } else {
-                // Test disabilitato: l'EntityManagerFactory dovrebbe essere null per input non validi
-                if (emf != null) {
-                    emf.close();
-                }
-
-                // TODO: fix to support that check
-                assertNull(emf, "EntityManagerFactory should be null for invalid inputs");
-            }
+            assertNotNull(emf, "EntityManagerFactory should not be null for valid inputs");
+            emf.close();
         } catch (Exception e) {
-            if (shouldSucceed) {
-                fail("Should not throw exception for valid inputs: " + e.getMessage());
+            fail("Should not throw exception for valid inputs: " + e.getMessage());
+        }
+    }
+
+    @Disabled("Fix to make on the source code")
+    @ParameterizedTest
+    @MethodSource("createInvalidContainerEntityManagerFactoryTestData")
+    @DisplayName("Test createContainerEntityManagerFactory with invalid inputs")
+    public void testCreateContainerEntityManagerFactoryInvalid(PersistenceUnitInfo pui, Map<String, Object> map) {
+        try {
+            OpenJPAEntityManagerFactory emf = provider.createContainerEntityManagerFactory(pui, map);
+            // Test disabilitato: l'EntityManagerFactory dovrebbe essere null per input non validi
+            if (emf != null) {
+                emf.close();
             }
+
+            // TODO: fix to support that check
+            assertNull(emf, "EntityManagerFactory should be null for invalid inputs");
+        } catch (Exception e) {
             // Exception is expected for invalid inputs
         }
+    }
+
+    /**
+     * Valid test data for createContainerEntityManagerFactory(PersistenceUnitInfo pui, Map m)
+     */
+    static Stream<Arguments> createValidContainerEntityManagerFactoryTestData() {
+        Map<String, Object> validMap = new HashMap<>();
+        validMap.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
+        validMap.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+        validMap.put("openjpa.BrokerFactory", "jdbc");
+
+        Map<String, Object> emptyMap = Collections.emptyMap();
+
+        // Create mock PersistenceUnitInfo objects
+        PersistenceUnitInfo completeInfo = Mockito.mock(PersistenceUnitInfo.class);
+        Properties props = new Properties();
+        props.put("openjpa.BrokerFactory", "jdbc");
+        Mockito.when(completeInfo.getPersistenceUnitName()).thenReturn("test-unit");
+        Mockito.when(completeInfo.getProperties()).thenReturn(props);
+        Mockito.when(completeInfo.getClassLoader()).thenReturn(Thread.currentThread().getContextClassLoader());
+
+        return Stream.of(
+                // Complete info, valid map
+                arguments((Object) completeInfo, (Object) validMap),
+                // Complete info, empty map
+                arguments((Object) completeInfo, (Object) emptyMap),
+                // Complete info, null map
+                arguments((Object) completeInfo, (Object) null)
+        );
+    }
+
+    /**
+     * Invalid test data for createContainerEntityManagerFactory(PersistenceUnitInfo pui, Map m)
+     */
+    static Stream<Arguments> createInvalidContainerEntityManagerFactoryTestData() {
+        Map<String, Object> validMap = new HashMap<>();
+        validMap.put("openjpa.ConnectionURL", "jdbc:hsqldb:mem:testdb");
+        validMap.put("openjpa.ConnectionDriverName", "org.hsqldb.jdbcDriver");
+        validMap.put("openjpa.BrokerFactory", "jdbc");
+
+        Map<String, Object> emptyMap = Collections.emptyMap();
+
+        // Create mock PersistenceUnitInfo objects
+        PersistenceUnitInfo incompleteInfo = Mockito.mock(PersistenceUnitInfo.class);
+        Mockito.when(incompleteInfo.getPersistenceUnitName()).thenReturn("test-unit");
+
+        PersistenceUnitInfo emptyInfo = Mockito.mock(PersistenceUnitInfo.class);
+
+        return Stream.of(
+                // Incomplete info, valid map
+                arguments((Object) incompleteInfo, (Object) validMap),
+                // Incomplete info, empty map
+                arguments((Object) incompleteInfo, (Object) emptyMap),
+                // Incomplete info, null map
+                arguments((Object) incompleteInfo, (Object) null),
+                // Empty info, valid map
+                arguments((Object) emptyInfo, (Object) validMap),
+                // Empty info, empty map
+                arguments((Object) emptyInfo, (Object) emptyMap),
+                // Empty info, null map
+                arguments((Object) emptyInfo, (Object) null),
+                // Null info, valid map
+                arguments((Object) null, (Object) validMap),
+                // Null info, empty map
+                arguments((Object) null, (Object) emptyMap),
+                // Null info, null map
+                arguments((Object) null, (Object) null)
+        );
     }
 
     /**

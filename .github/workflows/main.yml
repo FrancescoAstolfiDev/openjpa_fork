@@ -26,7 +26,3 @@ jobs:
         run: mvn -B install   -Dcheckstyle.skip=true --file pom.xml
       - name: 'Remove Snapshots Before Caching'
         run: find ~/.m2 -name '*SNAPSHOT' | xargs rm -Rf
-
-     
-
-
