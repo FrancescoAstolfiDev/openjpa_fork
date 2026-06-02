@@ -34,4 +34,4 @@ jobs:
         #   Execute just the -isw2 tests
         run: |
           mvn clean install -Dcheckstyle.skip -Dspotbugs.skip -DskipTests
-          mvn test -pl openjpa-kerne -Dtest=Isw2* -Dcheckstyle.skip -Dspotbugs.skip
+          mvn test -pl openjpa-kernel -Dtest=Isw2* -Dcheckstyle.skip -Dspotbugs.skip
