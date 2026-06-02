@@ -38,6 +38,10 @@
     <version>4.1.2-SNAPSHOT</version>
 
     <properties>
+
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
         <java.class.version>11</java.class.version>
         <java.testclass.version>11</java.testclass.version>
 

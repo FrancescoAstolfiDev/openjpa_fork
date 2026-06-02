@@ -1,39 +1,37 @@
-#
-# Licensed to the Apache Software Foundation (ASF) under one or more contributor
-# license agreements.  See the NOTICE file distributed with this work for additional
-# information regarding copyright ownership.  The ASF licenses this file to you
-# under the Apache License, Version 2.0 (the # "License"); you may not use this
-# file except in compliance with the License.  You may obtain a copy of the License
-# at:
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software distributed
-# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-# CONDITIONS OF ANY KIND, either express or implied.  See the License for the
-# specific language governing permissions and limitations under the License.
-#
-name: Java CI
-on: [push]
-env:
-  MAVEN_OPTS: -Dmaven.artifact.threads=256 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+name: Java CI Multi-LTS
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
+
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version: [8, 11, 17, 21]
+
+    name: Build & Test (Java ${{ matrix.java-version }})
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Java JDK
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
-          java-version: 11
-      - name: 'Cache Maven packages'
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: 'cache'
-          restore-keys: 'cache'
-      - name: 'Build with Maven'
-        run: mvn -B install --file pom.xml
-      - name: 'Remove Snapshots Before Caching'
-        run: find ~/.m2 -name '*SNAPSHOT' | xargs rm -Rf
+          java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build and Run ISW2 Tests
+        #   Execute just the -isw2 tests
+        run: |
+          mvn clean install -Dcheckstyle.skip -Dspotbugs.skip -DskipTests
+          mvn test -pl openjpa-kerne -Dtest=Isw2* -Dcheckstyle.skip -Dspotbugs.skip
