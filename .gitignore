@@ -10,4 +10,7 @@ nb-configuration.xml
 nbactions*.xml
 .checkstyle
 .vscode
+openjpa-kernel/lib/
+openjpa-kernel/libs/
+openjpa-kernel/evosuite-tests/
 

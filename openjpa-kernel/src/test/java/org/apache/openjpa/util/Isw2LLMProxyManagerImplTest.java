@@ -99,7 +99,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * </pre>
  */
 @DisplayName("ProxyManagerImpl — LLM Mutation-Coverage: newCustomProxy(Object, boolean)")
-public class Isw2LLMProxyManagerImplMutationTest {
+public class Isw2LLMProxyManagerImplTest {
 
     // ─────────────────────────────────────────────────────────────────────────
     // Nested helper types
